@@ -1,9 +1,10 @@
 import User from "discourse/models/user";
+import { withPluginApi } from "discourse/lib/plugin-api";
 
 export default {
   name: "footer-with-encouragement",
 
-  initialize(api) {
+  initialize() {
     console.log("My GiPSo Discourse Theme Component voor een specifieke footer werkt!");
 
 
