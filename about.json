@@ -1,0 +1,8 @@
+{
+  "version": "1.0.1",
+  "name": "Gipso footer with follow us encouragement",
+  "about": "A Discourse Theme Component that adds a footer to the category Gipso in beweging that encourages users to register and to be kept informed",
+  "license_url": "https://opensource.org/licenses/MIT",
+  "component": true,
+  "authors": ["Ludo Vangilbergen"]
+}
