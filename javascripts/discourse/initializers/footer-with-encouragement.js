@@ -3,8 +3,9 @@ import User from "discourse/models/user";
 export default {
   name: "footer-with-encouragement",
 
-  initialize() {
+  initialize(api) {
     console.log("My GiPSo Discourse Theme Component voor een specifieke footer werkt!");
+
 
     api.decorateWidget("topic-footer:after", (helper) => {
       const currentUser = User.current();
