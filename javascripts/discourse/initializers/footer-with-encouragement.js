@@ -20,6 +20,7 @@ export default {
 
         // Controleer of de categorie 'GiPSo in beweging' is
         if (categorySlug === "gipso-in-beweging") {
+	  console.log("Juiste categorie!")
           if (!currentUser) {
             // Niet-geregistreerde gebruikers
             return helper.rawHtml(`
