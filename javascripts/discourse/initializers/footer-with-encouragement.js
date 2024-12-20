@@ -12,8 +12,8 @@ export default {
       console.log("Plugin API beschikbaar!");
 
       // Gebruik decorateWidget om een extra sectie toe te voegen aan de footer
-      api.decorateWidget("topic-footer:after", (helper) => {
-        console.log("Widget wordt gedecoreerd");
+      api.decorateWidget("post-bottom:after", (helper) => {
+        console.log("post-bottom widget gedecoreerd");
 
         const currentUser = User.current();
         const categorySlug = helper.attrs.categorySlug;
