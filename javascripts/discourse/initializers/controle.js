@@ -5,9 +5,9 @@ export default {
   name: "footer-with-encouragement",
 
   initialize() {
-    console.log("My GiPSo Discourse Theme Component voor een specifieke footer werkt!");
-    
-     // Gebruik withPluginApi om de API te injecteren
+    console.log("Theme component: footer-with-encouragement geladen!");
+
+    // Gebruik withPluginApi om de API te injecteren
     withPluginApi("0.8", (api) => {
       console.log("Plugin API beschikbaar!");
 
@@ -18,13 +18,16 @@ export default {
         const currentUser = User.current();
         const categorySlug = helper.attrs.categorySlug;
 
-        // Controleer of de categorie 'GiPSo in beweging' is
-        if (categorySlug === "gipso-in-beweging") {
+        // Controleer of het een specifieke categorie is
+        if (categorySlug === "gipsonieuws") {
           if (!currentUser) {
             // Niet-geregistreerde gebruikers
             return helper.rawHtml(`
-              <div class="gipsoinbeweging-cta">
-                <p>Ben je geïnteresseerd in onze updates? <strong>Registreer je nu</strong> om berichten rechtstreeks in je e-mail te ontvangen!</p>
+              <div class="cta-gipsonieuws">
+                <p>
+                  Registreer je om updates rechtstreeks in je inbox te ontvangen!
+                  <a href="/signup" class="btn btn-primary">Registreer nu</a>
+                </p>
               </div>
             `);
           } else if (
@@ -33,8 +36,11 @@ export default {
           ) {
             // Geregistreerde gebruikers die de categorie niet volgen
             return helper.rawHtml(`
-              <div class="gipsoinbeweging-cta">
-                <p>Volg deze categorie om geen enkele update te missen! Klik op de knop <strong>"Volgen"</strong> bovenaan deze pagina.</p>
+              <div class="cta-gipsonieuws">
+                <p>
+                  Volg deze categorie om alle updates te ontvangen!
+                  Klik op de <strong>"Volgen"</strong>-knop bovenaan.
+                </p>
               </div>
             `);
           }
