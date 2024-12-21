@@ -39,9 +39,9 @@ export default {
       console.log("Gebruiker volgt deze categorieën:", currentUser.trackingCategories);
 	
         // Controleer of de categorie 'GiPSo in beweging' is
-	if (topicCategory === 55) {
+	//if (topicCategory === 55) {
 	  console.log("Juiste categorie!")
-          if (!currentUser) {
+          // if (!currentUser) {
             // Niet-geregistreerde gebruikers
             //return helper.rawHtml('<div>Mijn HTML inhoud 1</div>');
 	    //return helper.rawHtml(`
@@ -52,10 +52,10 @@ export default {
             //   </p>
             // </div>
             //`);
-          } else if (
-            !currentUser.trackingCategories ||
-            !currentUser.trackingCategories.includes(helper.attrs.categoryId)
-          ) {
+          //} else if (
+            //!currentUser.trackingCategories ||
+            //!currentUser.trackingCategories.includes(helper.attrs.categoryId)
+          //) {
             // Geregistreerde gebruikers die de categorie niet volgen
             //return helper.rawHtml('<div>Mijn HTML inhoud 2</div>');
             //return helper.rawHtml(`
@@ -63,8 +63,8 @@ export default {
             //    <p>Volg deze categorie om geen enkele update te missen! Klik op de knop <strong>"Volgen"</strong> bovenaan deze pagina.</p>
             //  </div>
             //`);
-          }
-        }
+          //}
+        //}
       });
     });
   },
