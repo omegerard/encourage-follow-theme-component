@@ -28,6 +28,8 @@ export default {
         const topicCategory = topic.category_id; // Hier halen we de categorie op
         console.log("Categorie ID:", topicCategory);
 
+	const trackingCategories = currentUser.trackingCategories || [];
+        console.log("Tracking categories:", trackingCategories);
 	
         // Controleer of de categorie 'GiPSo in beweging' is
 	if (topicCategory === 55) {
