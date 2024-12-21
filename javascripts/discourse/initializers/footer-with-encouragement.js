@@ -74,6 +74,7 @@ export default {
 /**
  * Controleer of de gebruiker een categorie volgt.
  */
+/**
 async function isUserFollowingCategory(categoryId) {
   try {
     const currentUser = User.current();
@@ -89,3 +90,4 @@ async function isUserFollowingCategory(categoryId) {
     return false;
   }
 }
+**/
