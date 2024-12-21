@@ -13,10 +13,8 @@ export default {
 
       // Gebruik decorateWidget om een extra sectie toe te voegen aan de footer
       api.decorateWidget("post:after", async(helper) => {
-        console.log("post widget gedecoreerd");
+        console.log("Widget post:after gedecoreerd");
 
-        const currentUser = User.current();
-        console.log("Huidige gebruiker:", currentUser);
 
          // Controleer of we in een topic-context zitten
         const topic = helper.widget.attrs.topic;
@@ -28,19 +26,30 @@ export default {
         const topicCategory = topic.category_id; // Hier halen we de categorie op
         console.log("Categorie ID:", topicCategory);
 
-	console.log("Bezig met ophalen van tracking status...");
-	const isFollowing = currentUser.trackingCategories.includes(topicCategory);
-        console.log("Gebruiker volgt categorie:", isFollowing);
+        const currentUser = User.current();
+        console.log("Huidige gebruiker:", currentUser);
+
+
+	 // Controleer of de gebruiker "trackingCategories" beschikbaar heeft
+      if (!currentUser.trackingCategories || !Array.isArray(currentUser.trackingCategories)) {
+        console.warn("Trackingcategorieën zijn niet beschikbaar of niet geladen.");
+        return;
+      }
+
+      console.log("Gebruiker volgt deze categorieën:", currentUser.trackingCategories);
 	
         // Controleer of de categorie 'GiPSo in beweging' is
 	if (topicCategory === 55) {
 	  console.log("Juiste categorie!")
           if (!currentUser) {
             // Niet-geregistreerde gebruikers
-            return helper.rawHtml(`
-              <div class="gipsoinbeweging-cta">
-                <p>Ben je geïnteresseerd in onze updates? <strong>Registreer je nu</strong> om berichten rechtstreeks in je e-mail te ontvangen!</p>
-              </div>
+	    return helper.rawHtml(`
+	     <div class="gipsoinbeweging-cta">
+     	       <p>
+                 Registreer je om updates rechtstreeks in je inbox te ontvangen!
+                 <a href="/signup" class="btn btn-primary">Registreer nu</a>
+               </p>
+             </div>
             `);
           } else if (
             !currentUser.trackingCategories ||
