@@ -16,6 +16,7 @@ export default {
         console.log("post widget gedecoreerd");
 
         const currentUser = User.current();
+        console.log("Huidige gebruiker:", currentUser);
 
          // Controleer of we in een topic-context zitten
         const topic = helper.widget.attrs.topic;
@@ -27,8 +28,6 @@ export default {
         const topicCategory = topic.category_id; // Hier halen we de categorie op
         console.log("Categorie ID:", topicCategory);
 
-        const currentUser = User.current();
-        console.log("Huidige gebruiker:", currentUser);
 	
         // Controleer of de categorie 'GiPSo in beweging' is
 	if (topicCategory === 55) {
