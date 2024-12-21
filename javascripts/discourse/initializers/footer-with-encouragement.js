@@ -43,7 +43,7 @@ export default {
 	  console.log("Juiste categorie!")
           if (!currentUser) {
             // Niet-geregistreerde gebruikers
-            return helper.rawHtml('<div>Mijn HTML inhoud 1</div>');
+            return helper.rawHtml(`<div>Mijn HTML inhoud 1</div>`);
 	    //return helper.rawHtml(`
 	    // <div class="gipsoinbeweging-cta">
      	    //   <p>
@@ -57,11 +57,12 @@ export default {
             !currentUser.trackingCategories.includes(helper.attrs.categoryId)
           ) {
             // Geregistreerde gebruikers die de categorie niet volgen
-            return helper.rawHtml(`
-              <div class="gipsoinbeweging-cta">
-                <p>Volg deze categorie om geen enkele update te missen! Klik op de knop <strong>"Volgen"</strong> bovenaan deze pagina.</p>
-              </div>
-            `);
+            return helper.rawHtml(`<div>Mijn HTML inhoud 2</div>`);
+            //return helper.rawHtml(`
+            //  <div class="gipsoinbeweging-cta">
+            //    <p>Volg deze categorie om geen enkele update te missen! Klik op de knop <strong>"Volgen"</strong> bovenaan deze pagina.</p>
+            //  </div>
+            //`);
           }
         }
       });
