@@ -29,7 +29,7 @@ export default {
         console.log("Categorie ID:", topicCategory);
 
 	console.log("Bezig met ophalen van tracking status...");
-        const isFollowing = await isUserFollowingCategory(topicCategory);
+	const isFollowing = currentUser.trackingCategories.includes(topicCategory);
         console.log("Gebruiker volgt categorie:", isFollowing);
 	
         // Controleer of de categorie 'GiPSo in beweging' is
@@ -65,16 +65,16 @@ export default {
  */
 async function isUserFollowingCategory(categoryId) {
   try {
-    const response = await fetch(`/u/${User.current().username}/preferences/categories.json`);
-    const data = await response.json();
+    const currentUser = User.current();
+    if (!currentUser || !currentUser.trackingCategories) {
+      console.log("Geen trackingcategorieën beschikbaar voor de gebruiker.");
+      return false;
+    }
 
-    console.log("Gebruikersvoorkeuren opgehaald:", data);
-
-    const trackedCategories = data.category_tracking || [];
-    const isFollowing = trackedCategories.includes(categoryId);
-    return isFollowing;
+    console.log("Gebruiker volgt deze categorieën:", currentUser.trackingCategories);
+    return currentUser.trackingCategories.includes(categoryId);
   } catch (error) {
-    console.error("Fout bij ophalen van categorieën:", error);
+    console.error("Onverwachte fout bij ophalen van trackingcategorieën:", error);
     return false;
   }
 }
