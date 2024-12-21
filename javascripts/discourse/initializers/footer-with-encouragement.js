@@ -28,8 +28,9 @@ export default {
         const topicCategory = topic.category_id; // Hier halen we de categorie op
         console.log("Categorie ID:", topicCategory);
 
-	const trackingCategories = currentUser.trackingCategories || [];
-        console.log("Tracking categories:", trackingCategories);
+	console.log("Bezig met ophalen van tracking status...");
+        const isFollowing = await isUserFollowingCategory(topicCategory);
+        console.log("Gebruiker volgt categorie:", isFollowing);
 	
         // Controleer of de categorie 'GiPSo in beweging' is
 	if (topicCategory === 55) {
