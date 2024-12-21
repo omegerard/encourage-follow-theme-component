@@ -43,14 +43,15 @@ export default {
 	  console.log("Juiste categorie!")
           if (!currentUser) {
             // Niet-geregistreerde gebruikers
-	    return helper.rawHtml(`
-	     <div class="gipsoinbeweging-cta">
-     	       <p>
-                 Registreer je om updates rechtstreeks in je inbox te ontvangen!
-                 <a href="/signup" class="btn btn-primary">Registreer nu</a>
-               </p>
-             </div>
-            `);
+            return helper.rawHtml('<div>Mijn HTML inhoud 1</div>');
+	    //return helper.rawHtml(`
+	    // <div class="gipsoinbeweging-cta">
+     	    //   <p>
+            //     Registreer je om updates rechtstreeks in je inbox te ontvangen!
+            //     <a href="/signup" class="btn btn-primary">Registreer nu</a>
+            //   </p>
+            // </div>
+            //`);
           } else if (
             !currentUser.trackingCategories ||
             !currentUser.trackingCategories.includes(helper.attrs.categoryId)
