@@ -12,7 +12,7 @@ export default {
       console.log("Plugin API beschikbaar!");
 
       // Gebruik decorateWidget om een extra sectie toe te voegen aan de footer
-      api.decorateWidget("post:after", (helper) => {
+      api.decorateWidget("post:after", async(helper) => {
         console.log("post widget gedecoreerd");
 
         const currentUser = User.current();
@@ -59,3 +59,22 @@ export default {
   },
 };
 
+
+/**
+ * Controleer of de gebruiker een categorie volgt.
+ */
+async function isUserFollowingCategory(categoryId) {
+  try {
+    const response = await fetch(`/u/${User.current().username}/preferences/categories.json`);
+    const data = await response.json();
+
+    console.log("Gebruikersvoorkeuren opgehaald:", data);
+
+    const trackedCategories = data.category_tracking || [];
+    const isFollowing = trackedCategories.includes(categoryId);
+    return isFollowing;
+  } catch (error) {
+    console.error("Fout bij ophalen van categorieën:", error);
+    return false;
+  }
+}
