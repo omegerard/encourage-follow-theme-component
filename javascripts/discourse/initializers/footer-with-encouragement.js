@@ -5,53 +5,60 @@ export default {
   name: "footer-with-encouragement",
 
   initialize() {
-    console.log("My GiPSo Discourse Theme Component voor een specifieke footer werkt!");
+    console.log("My GiPSo Discourse Theme Component wordt geïnitialiseerd!");
 
-    // Gebruik withPluginApi om de API te injecteren
     withPluginApi("0.8", (api) => {
-      console.log("Plugin API beschikbaar!");
+      console.log("Plugin API succesvol geladen!");
 
-      // Gebruik decorateWidget om een extra sectie toe te voegen aan de footer
-      api.decorateWidget("post:after", async (helper) => {
-        console.log("Widget post:after gedecoreerd");
+      api.decorateWidget("post:after", (helper) => {
+        console.log("Widget post:after wordt aangeroepen!");
 
-        // Controleer of we in een topic-context zitten
+        // Controleer of er een topic beschikbaar is
         const topic = helper.widget.attrs.topic;
         if (!topic) {
-          console.log("Geen topic-context beschikbaar.");
-          return null; // Return expliciet null om niets toe te voegen
+          console.log("Geen topic-context beschikbaar. Return null.");
+          return null;
         }
 
-        const topicCategory = topic.category_id; // Hier halen we de categorie op
-        console.log("Categorie ID:", topicCategory);
+        // Log de categorie van het topic
+        const topicCategory = topic.category_id;
+        console.log("Categorie-ID van dit topic:", topicCategory);
 
+        // Haal de huidige gebruiker op
         const currentUser = User.current();
-        console.log("Huidige gebruiker:", currentUser);
+        console.log("Ingelogde gebruiker:", currentUser);
 
-        // Controleer of de gebruiker "trackingCategories" beschikbaar heeft
-        if (!currentUser?.trackingCategories || !Array.isArray(currentUser.trackingCategories)) {
-          console.warn("Trackingcategorieën zijn niet beschikbaar of niet geladen.");
-          return null; // Return expliciet null om niets toe te voegen
-        }
+        // Basisvalidatie van trackingCategories
+        const trackingCategories =
+          currentUser?.trackingCategories || [];
+        console.log("Categorieën die gevolgd worden door de gebruiker:", trackingCategories);
 
-        console.log("Gebruiker volgt deze categorieën:", currentUser.trackingCategories);
-
-        // Voeg hier je logica toe voor het tonen van content
+        // Alleen iets toevoegen als het een specifieke categorie is (bijv. ID 55)
         if (topicCategory === 55) {
-          console.log("Juiste categorie!");
-
-          // Voor demonstratie: toon een eenvoudige boodschap
-          return helper.rawHtml(`
-            <div class="gipso-footer-message">
-              <p>Bedankt voor het lezen van GiPSo-informatie!</p>
-            </div>
-          `);
+          if (!currentUser) {
+            console.log("Niet-geregistreerde gebruiker. Toon registratieboodschap.");
+            return helper.rawHtml(`
+              <div class="gipso-footer-cta">
+                <p>
+                  Registreer je om updates rechtstreeks in je inbox te ontvangen!
+                  <a href="/signup" class="btn btn-primary">Registreer nu</a>
+                </p>
+              </div>
+            `);
+          } else if (!trackingCategories.includes(topicCategory)) {
+            console.log("Geregistreerde gebruiker volgt de categorie niet. Toon volgboodschap.");
+            return helper.rawHtml(`
+              <div class="gipso-footer-cta">
+                <p>Volg deze categorie om geen enkele update te missen!</p>
+              </div>
+            `);
+          }
         }
 
-        // Return null als er geen inhoud wordt toegevoegd
+        // Als geen voorwaarden voldoen, return expliciet null
+        console.log("Geen inhoud toegevoegd aan widget.");
         return null;
       });
     });
   },
 };
-
