@@ -19,7 +19,7 @@ export default {
         const categorySlug = helper.attrs.categorySlug;
 
         // Controleer of de categorie 'GiPSo in beweging' is
-        if (categorySlug === "gipso-in-beweging") {
+	if (topicCategory === 55) {
 	  console.log("Juiste categorie!")
           if (!currentUser) {
             // Niet-geregistreerde gebruikers
