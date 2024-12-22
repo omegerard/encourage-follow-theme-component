@@ -69,8 +69,8 @@ export default {
         }
 
         console.log("Categorie 55 wordt NIET geobserveerd. Toon aangepaste boodschap.");
-        const messageHtml = `<div class="gipso-footer-cta"><p>Boodschap voor geregistreerde gebruiker die de categorie NIET volgt</p></div>`;
-
+        const messageHtml = `<p>Boodschap voor geregistreerde gebruiker die de categorie NIET volgt</p>`;
+        console.log("HTML voor helper.rawHtml():", messageHtml);
         // Controleer dat de boodschap een geldige string is
         if (typeof messageHtml === "string") {
           return helper.rawHtml(messageHtml);
