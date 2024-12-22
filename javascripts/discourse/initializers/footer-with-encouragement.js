@@ -12,7 +12,6 @@ export default {
       console.log("Plugin API beschikbaar!");
 
       // Gebruik decorateWidget om een extra sectie toe te voegen aan de footer
-      await api.decorateWidget("post:after", async (helper) => {
         console.log("Widget post:after gedecoreerd");
 
         // Controleer of we in een topic-context zitten
@@ -43,7 +42,6 @@ export default {
         } catch (error) {
           console.error("Fout bij ophalen van categorieën:", error);
         }
-      });
     });
   },
 };
