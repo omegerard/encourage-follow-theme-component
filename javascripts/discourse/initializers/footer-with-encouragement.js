@@ -30,25 +30,30 @@ export default {
 
         // Controleer of we de juiste categorie volgen
         try {
-          // Hier moet de trackinginformatie op een juiste manier worden opgehaald
           const watchedCategoryIds = currentUser.notifications
             ? currentUser.notifications.watched_category_ids || []
             : [];
 
           console.log("Volgde categorieën:", watchedCategoryIds);
 
+          // Scenario 4: Categorie 55 wordt niet gevolgd, toon boodschap
           if (!watchedCategoryIds.includes(topicCategory)) {
             console.log("Categorie wordt niet gevolgd. Toon aangepaste boodschap.");
-            const messageHtml = `
-              <div class="gipso-footer-cta">
-                <p>
-                  Volg deze categorie om geen enkele update te missen! Klik op de knop
-                  <strong>"Volgen"</strong> bovenaan deze pagina.
-                </p>
-              </div>
-            `;
-            console.log("Dit is de te tonen boodschap: ", messageHtml);
-            return helper.rawHtml(messageHtml);
+            
+            // Maak een nieuwe widget aan om de boodschap te tonen
+            const messageWidget = api.createWidget("footer-encouragement", {
+              content: `
+                <div class="gipso-footer-cta">
+                  <p>
+                    Volg deze categorie om geen enkele update te missen! Klik op de knop
+                    <strong>"Volgen"</strong> bovenaan deze pagina.
+                  </p>
+                </div>
+              `,
+            });
+
+            // Voeg het nieuwe widget toe aan de post
+            helper.addWidget(messageWidget);
           }
         } catch (error) {
           console.error("Fout bij ophalen van categorieën:", error);
@@ -57,4 +62,3 @@ export default {
     });
   },
 };
-
