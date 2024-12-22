@@ -69,14 +69,7 @@ export default {
         }
 
         console.log("Categorie 55 wordt NIET geobserveerd. Toon aangepaste boodschap.");
-        const messageHtml = `
-          <div class="gipso-footer-cta">
-            <p>
-              Volg deze categorie om geen enkele update te missen! Klik op de knop
-              <strong>"Volgen"</strong> bovenaan deze pagina.
-            </p>
-          </div>
-        `;
+        const messageHtml = `<div class="gipso-footer-cta"><p>Boodschap voor geregistreerde gebruiker die de categorie NIET volgt</p></div>`;
 
         // Controleer dat de boodschap een geldige string is
         if (typeof messageHtml === "string") {
