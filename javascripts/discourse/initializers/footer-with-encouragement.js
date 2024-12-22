@@ -10,7 +10,7 @@ export default {
     // Gebruik withPluginApi om de API te injecteren
     await withPluginApi("0.8", async (api) => {
       console.log("Plugin API beschikbaar!");
-
+      async (helper) => {
       // Gebruik decorateWidget om een extra sectie toe te voegen aan de footer
         console.log("Widget post:after gedecoreerd");
 
@@ -42,6 +42,7 @@ export default {
         } catch (error) {
           console.error("Fout bij ophalen van categorieën:", error);
         }
+      };
     });
   },
 };
