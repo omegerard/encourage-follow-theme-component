@@ -47,30 +47,37 @@ export default {
         console.log("Ingelogde gebruiker:", currentUser);
 
         // Controleer of de gebruiker categorie 55 observeert
+        let isWatchingCategory = false;
         try {
           const response = await fetch(`/u/${currentUser.username}/notifications.json`);
           const notifications = await response.json();
           console.log("Notificatie-instellingen opgehaald:", notifications);
 
-          if (notifications.watched_category_ids.includes(55)) {
-            console.log("Categorie 55 wordt al geobserveerd. Geen boodschap tonen.");
-            return null;
+          if (Array.isArray(notifications.watched_category_ids)) {
+            isWatchingCategory = notifications.watched_category_ids.includes(55);
           }
-
-          console.log("Categorie 55 wordt NIET geobserveerd. Toon aangepaste boodschap.");
-          return helper.rawHtml(`
-            <div class="gipso-footer-cta">
-              <p>
-                Volg deze categorie om geen enkele update te missen! Klik op de knop
-                <strong>"Volgen"</strong> bovenaan deze pagina.
-              </p>
-            </div>
-          `);
         } catch (error) {
           console.error("Fout bij ophalen van notificatiestatus:", error);
+          return null; // Stop de uitvoering als notificatiestatus niet kan worden opgehaald
+        }
+
+        // Controleer observatiestatus en toon boodschap indien nodig
+        if (isWatchingCategory) {
+          console.log("Categorie 55 wordt al geobserveerd. Geen boodschap tonen.");
           return null;
         }
+
+        console.log("Categorie 55 wordt NIET geobserveerd. Toon aangepaste boodschap.");
+        return helper.rawHtml(`
+          <div class="gipso-footer-cta">
+            <p>
+              Volg deze categorie om geen enkele update te missen! Klik op de knop
+              <strong>"Volgen"</strong> bovenaan deze pagina.
+            </p>
+          </div>
+        `);
       });
     });
   },
 };
+
