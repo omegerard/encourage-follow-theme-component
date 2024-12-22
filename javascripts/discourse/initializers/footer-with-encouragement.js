@@ -51,6 +51,7 @@ export default {
         try {
           const response = await fetch(`/u/${currentUser.username}/notifications.json`);
           const notifications = await response.json();
+
           console.log("Notificatie-instellingen opgehaald:", notifications);
 
           if (Array.isArray(notifications.watched_category_ids)) {
@@ -68,14 +69,22 @@ export default {
         }
 
         console.log("Categorie 55 wordt NIET geobserveerd. Toon aangepaste boodschap.");
-        return helper.rawHtml(`
+        const messageHtml = `
           <div class="gipso-footer-cta">
             <p>
               Volg deze categorie om geen enkele update te missen! Klik op de knop
               <strong>"Volgen"</strong> bovenaan deze pagina.
             </p>
           </div>
-        `);
+        `;
+
+        // Controleer dat de boodschap een geldige string is
+        if (typeof messageHtml === "string") {
+          return helper.rawHtml(messageHtml);
+        }
+
+        console.error("Ongeldige boodschap-HTML. Return null.");
+        return null;
       });
     });
   },
