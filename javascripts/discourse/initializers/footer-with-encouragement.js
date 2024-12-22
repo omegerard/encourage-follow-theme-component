@@ -40,7 +40,7 @@ export default {
           if (!watchedCategoryIds.includes(topicCategory)) {
             console.log("Categorie wordt niet gevolgd. Toon aangepaste boodschap.");
 
-            // Voeg de HTML-inhoud direct toe aan de widget
+            /* Voeg de HTML-inhoud direct toe aan de widget
             helper.content = `
               <div class="gipso-footer-cta">
                 <p>
@@ -49,6 +49,7 @@ export default {
                 </p>
               </div>
             `;
+	    */
           }
         } catch (error) {
           console.error("Fout bij ophalen van categorieën:", error);
