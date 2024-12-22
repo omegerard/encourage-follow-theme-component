@@ -10,7 +10,7 @@ export default {
     withPluginApi("0.8", (api) => {
       console.log("Plugin API succesvol geladen!");
 
-      api.decorateWidget("post:after", (helper) => {
+      api.decorateWidget("post:after", async (helper) => {
         console.log("Widget post:after wordt aangeroepen!");
 
         // Controleer of er een topic beschikbaar is
@@ -20,44 +20,56 @@ export default {
           return null;
         }
 
-        // Log de categorie van het topic
+        // Haal de categorie-ID van het topic op
         const topicCategory = topic.category_id;
         console.log("Categorie-ID van dit topic:", topicCategory);
 
-        // Haal de huidige gebruiker op
-        const currentUser = User.current();
-        console.log("Ingelogde gebruiker:", currentUser);
-
-        // Basisvalidatie van trackingCategories
-        const trackingCategories =
-          currentUser?.trackingCategories || [];
-        console.log("Categorieën die gevolgd worden door de gebruiker:", trackingCategories);
-
-        // Alleen iets toevoegen als het een specifieke categorie is (bijv. ID 55)
-        if (topicCategory === 55) {
-          if (!currentUser) {
-            console.log("Niet-geregistreerde gebruiker. Toon registratieboodschap.");
-            return helper.rawHtml(`
-              <div class="gipso-footer-cta">
-                <p>
-                  Registreer je om updates rechtstreeks in je inbox te ontvangen!
-                  <a href="/signup" class="btn btn-primary">Registreer nu</a>
-                </p>
-              </div>
-            `);
-          } else if (!trackingCategories.includes(topicCategory)) {
-            console.log("Geregistreerde gebruiker volgt de categorie niet. Toon volgboodschap.");
-            return helper.rawHtml(`
-              <div class="gipso-footer-cta">
-                <p>Volg deze categorie om geen enkele update te missen!</p>
-              </div>
-            `);
-          }
+        // Controleer of het topic in categorie 55 valt
+        if (topicCategory !== 55) {
+          console.log("Dit topic hoort niet bij categorie 55. Geen boodschap tonen.");
+          return null;
         }
 
-        // Als geen voorwaarden voldoen, return expliciet null
-        console.log("Geen inhoud toegevoegd aan widget.");
-        return null;
+        // Haal de huidige gebruiker op
+        const currentUser = User.current();
+        if (!currentUser) {
+          console.log("Niet-geregistreerde gebruiker. Toon algemene boodschap.");
+          return helper.rawHtml(`
+            <div class="gipso-footer-cta">
+              <p>
+                Registreer je om updates rechtstreeks in je inbox te ontvangen!
+                <a href="/signup" class="btn btn-primary">Registreer nu</a>
+              </p>
+            </div>
+          `);
+        }
+
+        console.log("Ingelogde gebruiker:", currentUser);
+
+        // Controleer of de gebruiker categorie 55 observeert
+        try {
+          const response = await fetch(`/u/${currentUser.username}/notifications.json`);
+          const notifications = await response.json();
+          console.log("Notificatie-instellingen opgehaald:", notifications);
+
+          if (notifications.watched_category_ids.includes(55)) {
+            console.log("Categorie 55 wordt al geobserveerd. Geen boodschap tonen.");
+            return null;
+          }
+
+          console.log("Categorie 55 wordt NIET geobserveerd. Toon aangepaste boodschap.");
+          return helper.rawHtml(`
+            <div class="gipso-footer-cta">
+              <p>
+                Volg deze categorie om geen enkele update te missen! Klik op de knop
+                <strong>"Volgen"</strong> bovenaan deze pagina.
+              </p>
+            </div>
+          `);
+        } catch (error) {
+          console.error("Fout bij ophalen van notificatiestatus:", error);
+          return null;
+        }
       });
     });
   },
