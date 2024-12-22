@@ -39,17 +39,6 @@ export default {
           // Scenario 4: Categorie 55 wordt niet gevolgd, toon boodschap
           if (!watchedCategoryIds.includes(topicCategory)) {
             console.log("Categorie wordt niet gevolgd. Toon aangepaste boodschap.");
-
-            /* Voeg de HTML-inhoud direct toe aan de widget
-            *helper.content = `
-            *  <div class="gipso-footer-cta">
-            *    <p>
-            *      Volg deze categorie om geen enkele update te missen! Klik op de knop
-            *      <strong>"Volgen"</strong> bovenaan deze pagina.
-            *    </p>
-            *  </div>
-            *`;
-	    */
           }
         } catch (error) {
           console.error("Fout bij ophalen van categorieën:", error);
