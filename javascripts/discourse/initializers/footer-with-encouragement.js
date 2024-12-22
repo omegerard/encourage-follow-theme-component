@@ -47,6 +47,7 @@ export default {
                 </p>
               </div>
             `;
+            console.log("Dit is de te tonen boodschap: ", messageHtml);
             return helper.rawHtml(messageHtml);
           }
         } catch (error) {
