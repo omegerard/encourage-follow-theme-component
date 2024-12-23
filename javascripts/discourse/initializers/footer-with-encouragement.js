@@ -3,9 +3,12 @@ import { apiInitializer } from "discourse/lib/api";
 export default apiInitializer("0.11.1", (api) => {
   api.onPageChange(() => {
     // Zorg dat de script alleen draait op de juiste pagina's
-    if (!api.getCurrentRouteName().startsWith("topic")) {
+    const currentRoute = api.getCurrentRoute();
+    if (!currentRoute || !currentRoute.name.startsWith("topic")) {
       return; // Stop als je niet op een topicpagina bent
     }
+
+    console.log("Huidige route:", currentRoute.name);
 
     // Selecteer de juiste sectie waar de tekst moet worden toegevoegd
     const targetSection = document.querySelector(".topic-map__additional-contents");
