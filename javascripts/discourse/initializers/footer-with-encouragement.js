@@ -66,38 +66,36 @@ export default apiInitializer("0.11.1", (api) => {
   });
 });
 
+const fetchWatchedCategories = async (username) => {
+    try {
+        const response = await fetch(`/u/${username}/notifications.json`, {
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        });
 
-function fetchWatchedCategories(username) {
-  // Controleer of userId geldig is
-  console.log('Ik begin aan de fetchWatchedCategories');
-  console.log("userId: ", username);
-  if (!username) {
-    console.error("Gebruikers-ID is ongeldig of niet beschikbaar.");
-    return Promise.resolve([]);
-  }
+        if (!response.ok) {
+            throw new Error(`Failed to fetch data: ${response.statusText}`);
+        }
 
-  // Endpoint-URL voor categorievoorkeuren
-  const url = `/u/${username}/notifications.json`;
+        const data = await response.json();
 
-  return fetch(url)
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(`API-fout: ${response.status} ${response.statusText}`);
-      }
-      return response.json();
-    })
-    .then((data) => {
-      // Controleer of de structuur correct is
-      if (data.category_notification_levels && data.category_notification_levels.watching) {
-        return data.category_notification_levels.watching;
-      } else {
-        console.warn("Onverwachte datastructuur van API:", data);
+        // Haal de gevolgde categorie-ID's op
+        const watchedCategoryIds = data.user.watched_category_ids;
+
+        if (!watchedCategoryIds || watchedCategoryIds.length === 0) {
+            console.log("Geen gevolgde categorieën gevonden.");
+            return [];
+        }
+
+        console.log("Gevolgde categorieën:", watchedCategoryIds);
+        return watchedCategoryIds;
+
+    } catch (error) {
+        console.error("Fout bij het ophalen van gevolgde categorieën:", error);
         return [];
-      }
-    })
-    .catch((error) => {
-      console.error("Fout bij ophalen van gewatchte categorieën:", error);
-      return [];
-    });
-}
+    }
+};
+
 
