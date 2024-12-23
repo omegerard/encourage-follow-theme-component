@@ -75,7 +75,7 @@ function fetchWatchedCategories(userId) {
   }
 
   // Endpoint-URL voor categorievoorkeuren
-  const url = `/u/${userId}/categories.json`;
+  const url = `/u/${userId}/notifications.json`;
 
   return fetch(url)
     .then((response) => {
