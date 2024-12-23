@@ -2,13 +2,14 @@ import { apiInitializer } from "discourse/lib/api";
 
 export default apiInitializer("0.11.1", (api) => {
   api.onPageChange(() => {
-    // Zorg dat de script alleen draait op de juiste pagina's
-    const currentRoute = api.getCurrentRoute();
-    if (!currentRoute || !currentRoute.name.startsWith("topic")) {
-      return; // Stop als je niet op een topicpagina bent
+    // Controleer of we op een topicpagina zitten
+    const topicElement = document.querySelector(".topic-map");
+    if (!topicElement) {
+      console.log("Geen topicpagina. Stop de uitvoering.");
+      return;
     }
 
-    console.log("Huidige route:", currentRoute.name);
+    console.log("We bevinden ons op een topicpagina.");
 
     // Selecteer de juiste sectie waar de tekst moet worden toegevoegd
     const targetSection = document.querySelector(".topic-map__additional-contents");
@@ -37,15 +38,15 @@ export default apiInitializer("0.11.1", (api) => {
 
     console.log("Geregistreerde gebruiker gedetecteerd:", currentUser.username);
 
-    // Probeer de categorie-ID op te halen
-    let topicCategoryId = null;
-    try {
-      topicCategoryId = api.getCurrentCategoryId();
-      console.log("Huidige topic categorie:", topicCategoryId);
-    } catch (error) {
-      console.error("Kon de categorie-ID niet ophalen:", error);
+    // Probeer de categorie-ID op te halen uit de badge in de DOM
+    const categoryBadge = document.querySelector(".badge-category[data-category-id]");
+    if (!categoryBadge) {
+      console.error("Kon de categoriebadge niet vinden in de DOM.");
       return;
     }
+
+    const topicCategoryId = parseInt(categoryBadge.getAttribute("data-category-id"), 10);
+    console.log("Huidige topic categorie:", topicCategoryId);
 
     // Controleer of de gebruiker categorie 55 volgt
     const watchedCategoryIds = currentUser.notification_levels ? currentUser.notification_levels.watching || [] : [];
