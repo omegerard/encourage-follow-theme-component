@@ -32,7 +32,30 @@ export default apiInitializer("0.11.1", (api) => {
       `;
       targetSection.appendChild(messageDiv);
       return;
-    }
+    } else {
+
+      // Haal de notificatieniveaus op voor categorieën
+      const watchedCategoryIds = currentUser.notification_levels
+        ? currentUser.notification_levels.watching || []
+        : [];
+
+      console.log("Gewaakte categorieën:", watchedCategoryIds);
+
+      // Controleer of de huidige categorie 55 is en NIET wordt gevolgd
+      if (topicCategoryId === 55 && !watchedCategoryIds.includes(55)) {
+        // Voeg aangepaste boodschap toe
+        const additionalContent = document.createElement("div");
+        additionalContent.className = "gipso-footer-cta";
+        additionalContent.innerHTML = `
+          <p>
+            Volg deze categorie om geen enkele update te missen! Klik op de knop
+            <strong>"Volgen"</strong> bovenaan deze pagina.
+          </p>
+        `;
+        document.body.appendChild(additionalContent);
+     }
+   }
+
 
     console.log("Geregistreerde gebruiker gedetecteerd:", currentUser.username);
 
