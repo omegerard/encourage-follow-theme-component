@@ -69,6 +69,8 @@ export default apiInitializer("0.11.1", (api) => {
 
 function fetchWatchedCategories(userId) {
   // Controleer of userId geldig is
+  console.log('Ik begin aan de fetchWatchedCategories');
+  console.log("userId: ", userId);
   if (!userId) {
     console.error("Gebruikers-ID is ongeldig of niet beschikbaar.");
     return Promise.resolve([]);
