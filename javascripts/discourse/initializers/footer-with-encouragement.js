@@ -37,8 +37,8 @@ export default apiInitializer("0.11.1", (api) => {
     console.log("Geregistreerde gebruiker gedetecteerd:", currentUser.username);
 
     // Haal de huidige categorie-ID op uit de DOM
-    const categoryElement = document.querySelector('[data-category-id="55"]');
-    const topicCategoryId = categoryElement ? parseInt(categoryElement.content, 10) : null;
+    const categoryElement = document.querySelector('span[data-category-id="55"]');
+    const topicCategoryId = categoryElement ? parseInt(categoryElement.getAttribute('data-category-id'), 10) : null;
     if (!topicCategoryId) {
       console.warn("Kon de categorie-ID niet ophalen.");
       return;
