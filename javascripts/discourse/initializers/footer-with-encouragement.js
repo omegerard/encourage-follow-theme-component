@@ -66,17 +66,32 @@ export default apiInitializer("0.11.1", (api) => {
   });
 });
 
+
 function fetchWatchedCategories(userId) {
-  return fetch(`/u/${userId}/preferences/categories.json`)
+  // Controleer of userId geldig is
+  if (!userId) {
+    console.error("Gebruikers-ID is ongeldig of niet beschikbaar.");
+    return Promise.resolve([]);
+  }
+
+  // Endpoint-URL voor categorievoorkeuren
+  const url = `/u/${userId}/preferences/categories.json`;
+
+  return fetch(url)
     .then((response) => {
       if (!response.ok) {
-        throw new Error(`API-fout: ${response.statusText}`);
+        throw new Error(`API-fout: ${response.status} ${response.statusText}`);
       }
       return response.json();
     })
     .then((data) => {
-      console.log("Opgehaalde categorievoorkeuren:", data);
-      return data.category_notification_levels.watching || [];
+      // Controleer of de structuur correct is
+      if (data.category_notification_levels && data.category_notification_levels.watching) {
+        return data.category_notification_levels.watching;
+      } else {
+        console.warn("Onverwachte datastructuur van API:", data);
+        return [];
+      }
     })
     .catch((error) => {
       console.error("Fout bij ophalen van gewatchte categorieën:", error);
