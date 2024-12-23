@@ -2,9 +2,11 @@ import { apiInitializer } from "discourse/lib/api";
 
 export default apiInitializer("0.11.1", (api) => {
   api.onPageChange(() => {
-    // Zorg dat de script alleen draait op de juiste pagina's
-    if (!api.getCurrentRouteName().startsWith("topic")) {
-      return; // Stop als je niet op een topicpagina bent
+    // Controleer of de pagina een topicpagina is
+    const isTopicPage = window.location.pathname.startsWith("/t/");
+    if (!isTopicPage) {
+      console.log("Geen topicpagina. Script stopt hier.");
+      return;
     }
 
     // Selecteer de juiste sectie waar de tekst moet worden toegevoegd
@@ -34,10 +36,17 @@ export default apiInitializer("0.11.1", (api) => {
 
     console.log("Geregistreerde gebruiker gedetecteerd:", currentUser.username);
 
-    // Controleer of de gebruiker categorie 55 volgt
-    const topicCategoryId = api.getCurrentCategoryId();
+    // Haal de huidige categorie-ID op uit de DOM
+    const categoryElement = document.querySelector("meta[name='discourse-category-id']");
+    const topicCategoryId = categoryElement ? parseInt(categoryElement.content, 10) : null;
+    if (!topicCategoryId) {
+      console.warn("Kon de categorie-ID niet ophalen.");
+      return;
+    }
+
     console.log("Huidige topic categorie:", topicCategoryId);
 
+    // Controleer of de gebruiker categorie 55 volgt
     const watchedCategoryIds = currentUser.notification_levels ? currentUser.notification_levels.watching : [];
     if (topicCategoryId === 55 && !watchedCategoryIds.includes(55)) {
       console.log("Geregistreerde gebruiker volgt categorie 55 NIET. Toon aangepaste boodschap.");
@@ -59,3 +68,4 @@ export default apiInitializer("0.11.1", (api) => {
     }
   });
 });
+
