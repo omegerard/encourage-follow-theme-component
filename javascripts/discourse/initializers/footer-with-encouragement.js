@@ -42,7 +42,7 @@ export default apiInitializer("0.11.1", (api) => {
     console.log("Huidige topic categorie:", topicCategoryId);
 
     // Haal gewatchte categorieën op en voeg de aangepaste boodschap toe indien nodig
-    fetchWatchedCategories(currentUser.id).then((watchedCategoryIds) => {
+    fetchWatchedCategories(currentUser.username).then((watchedCategoryIds) => {
       console.log("Categorieën die worden gevolgd:", watchedCategoryIds);
 
       if (topicCategoryId === 55 && !watchedCategoryIds.includes(55)) {
@@ -67,17 +67,17 @@ export default apiInitializer("0.11.1", (api) => {
 });
 
 
-function fetchWatchedCategories(userId) {
+function fetchWatchedCategories(username) {
   // Controleer of userId geldig is
   console.log('Ik begin aan de fetchWatchedCategories');
-  console.log("userId: ", userId);
-  if (!userId) {
+  console.log("userId: ", username);
+  if (!username) {
     console.error("Gebruikers-ID is ongeldig of niet beschikbaar.");
     return Promise.resolve([]);
   }
 
   // Endpoint-URL voor categorievoorkeuren
-  const url = `/u/${userId}/notifications.json`;
+  const url = `/u/${username}/notifications.json`;
 
   return fetch(url)
     .then((response) => {
